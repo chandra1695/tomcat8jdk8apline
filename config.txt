@@ -1,0 +1,127 @@
+
+
+###Change IP to make JMX work in case if the IP was not configured correctly.
+# below command gives the correct ip
+ifconfig 
+# below command gives the ip from /etc/hosts file.
+hostname -i
+# if hostname -i doenst match ifconfig, then edit /etc/hosts and restart the applications which are enabled for JMX by default.
+
+#sample /etc/hosts file.
+
+# Disable SSL in Git
+git config http.sslVerify "false"
+
+# Upload a jar to your local repository
+mvn install:install-file -Dfile=/Users/pchin5/Downloads/org.wso2.carbon.ml.commons-1.2.2.jar -DgroupId=org.wso2.carbon.ml -DartifactId=org.wso2.carbon.ml.commons -Dversion=1.2.2 -Dpackaging=jar
+mvn install:install-file -Dfile=/Users/pchin5/Downloads/arpack_combined-0.1.wso2v1.jar -DgroupId=org.wso2.orbit.sourceforge.f2j -DartifactId=arpack_combined -Dversion=0.1.wso2v1 -Dpackaging=jar
+
+mvn install:install-file -Dfile=/Users/pchin5/Softwares/jars/com.ibm.mq.allclient.jar -DgroupId=com.amex.gbt -DartifactId=com.ibm.mq.allclient -Dversion=1.0.0 -Dpackaging=jar
+
+
+# Steps to check the queue depth and other details:
+
+sudo su mqm
+dspmq
+runmqsc  <QM Name>
+display q (TRAVELPORTPNR.INPUT)
+
+
+# Check cpu cores
+
+grep -c ^processor /proc/cpuinfo
+
+# Check RAM memory
+
+free
+
+# Hard disk space
+
+df -h
+
+# heap dump
+
+jmap -F -dump:format=b,file=/tmp/Heap_16.hprof 6585
+
+# Thread dump
+jstack -F 18864 > /tmp/threaddump16_8_4.txt
+
+
+#Compile with JARs included.
+mvn clean compile assembly:single
+<scope>provided</scope>
+
+
+keytool ­importcert ­alias processer02 ­keystore client-truststore.jks ­­file /tmp/proc02.cer
+
+
+sudo service docker start
+
+# Docker
+
+sudo yum install docker-engine-1.7.0-1.el7.centos.x86_64.rpm
+
+systemctl start docker.service
+
+docker tag e6ec8dc2e151 gtwtdlapgtrv03.gbt.gbtad.com:5000/wso2esb_5_jdk_8_prod:1.0
+
+# for older version of docker:
+
+Allow access to registry: The docker clients in Fedora and Red Hat Enterprise Linux require that you either obtain a certificate from the registry or you identify the registry as insecure. For this example, you can identify the registry as insecure by editing the /etc/sysconfig/docker file and creating the following lines in that file:
+
+ADD_REGISTRY='--add-registry gtwtdlapgtrv03.gbt.gbtad.com:5000'
+INSECURE_REGISTRY='--insecure-registry gtwtdlapgtrv03.gbt.gbtad.com:5000'
+After that, restart the local Docker service:
+
+systemctl restart docker
+
+# for NEWER versions of docker.
+$ sudo vim /usr/lib/systemd/system/docker.service
+#ExecStart=/usr/bin/dockerd 
+ExecStart=/usr/bin/dockerd --insecure-registry gtwtdlapgtrv03.gbt.gbtad.com:5000
+$
+$ sudo systemctl stop docker
+$ sudo systemctl daemon-reload
+$ systemctl start docker
+
+docker build -t wso2esb5_jdk8_test:1.0 .
+docker tag fa87674d4ff8 gtwtdlapgtrv03.gbt.gbtad.com:5000/wso2esb5_jdk8_test:1.0
+docker run -d --name wso2esb5_jdk8_realtime_test -p 6443:9443 -p 6280:8280 -v /app/logs/wso2esb/test/Realtime:/opt/wso2esb5/repository/logs gtwtdlapgtrv03.gbt.gbtad.com:5000/wso2esb5_jdk8_test:1.0
+docker run -d --name wso2esb5_jdk8_offline_test -p 7443:9443 -p 7280:8280 -v /app/logs/wso2esb/test/Offline:/opt/wso2esb5/repository/logs gtwtdlapgtrv03.gbt.gbtad.com:5000/wso2esb5_jdk8_test:1.0
+docker run -d --name wso2esb5_jdk8_batch_test -p 8443:9443 -p 8280:8280 -v /app/logs/wso2esb/test/batch:/opt/wso2esb5/repository/logs gtwtdlapgtrv03.gbt.gbtad.com:5000/wso2esb5_jdk8_test:1.0
+
+docker build -t wso2esb5_jdk8_dev:1.0 .
+docker tag 917bdfc00fe4 gtwtdlapgtrv03.gbt.gbtad.com:5000/wso2esb5_jdk8_dev:1.0
+docker run -d --name wso2esb5_jdk8_realtime_dev -p 1443:9443 -p 1280:8280 -v /app/logs/wso2esb/dev/Realtime:/opt/wso2esb5/repository/logs gtwtdlapgtrv03.gbt.gbtad.com:5000/wso2esb5_jdk8_dev:1.0
+docker run -d --name wso2esb5_jdk8_offline_dev -p 2443:9443 -p 2280:8280 -v /app/logs/wso2esb/dev/Offline:/opt/wso2esb5/repository/logs gtwtdlapgtrv03.gbt.gbtad.com:5000/wso2esb5_jdk8_dev:1.0
+docker run -d --name wso2esb5_jdk8_batch_dev -p 3443:9443 -p 3280:8280 -v /app/logs/wso2esb/dev/batch:/opt/wso2esb5/repository/logs gtwtdlapgtrv03.gbt.gbtad.com:5000/wso2esb5_jdk8_dev:1.0
+
+docker tag e6ec8dc2e151 gtwtdlapgtrv03.gbt.gbtad.com:5000/wso2esb_5_jdk_8_prod:1.0
+docker run -d --name wso2esb_5_jdk_8_1 -p 1443:9443 -p 1280:8280 -v /app/logs/wso2esb/esb1:/opt/wso2esb5/repository/logs gtwtdlapgtrv03.gbt.gbtad.com:5000/wso2esb_5_jdk_8_prod:1.0
+docker run -d --name wso2esb_5_jdk_8_2 -p 2443:9443 -p 2280:8280 -v /app/logs/wso2esb/esb2:/opt/wso2esb5/repository/logs gtwtdlapgtrv03.gbt.gbtad.com:5000/wso2esb_5_jdk_8_prod:1.0
+docker run -d --name wso2esb_5_jdk_8_3 -p 3443:9443 -p 3280:8280 -v /app/logs/wso2esb/esb3:/opt/wso2esb5/repository/logs gtwtdlapgtrv03.gbt.gbtad.com:5000/wso2esb_5_jdk_8_prod:1.0
+docker run -d --name wso2esb_5_jdk_8_4 -p 4443:9443 -p 4280:8280 -v /app/logs/wso2esb/esb4:/opt/wso2esb5/repository/logs gtwtdlapgtrv03.gbt.gbtad.com:5000/wso2esb_5_jdk_8_prod:1.0
+
+docker exec -it <containerIdOrName> bash
+docker cp wso2esb_490_jdk_8_2:/opt/wso2/wso2esb-4.9.0/repository/logs/heap-dump.hprof /tmp
+
+docker build -t wso2esbrabbitmq .
+docker save -o /tmp/wso2esbrabbitmqImage wso2esbrabbitmq
+docker load -i /tmp/wso2esbrabbitmqImage
+docker run -d --name rabbitMQ_for_ESB_1 -p 9671:15671 -p 9672:15672 wso2esbrabbitmq
+
+docker images -f "dangling=true"
+docker rmi -f $(docker images -f "dangling=true" -q)
+ 
+docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs docker rm
+
+du -a /var | sort -n -r | head -n 10
+
+
+Command to restart: "forever restart main.js".
+
+
+
+
+
+
